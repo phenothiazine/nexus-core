@@ -1,0 +1,403 @@
+/* Nexus-Core v6: Refined Dark Mode & UI */
+
+/* --- CSS Variables for Light/Dark Mode --- */
+:root {
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F8F8F8;
+    --bg-chat-user: #007AFF;
+    --bg-chat-assistant: #F2F2F7;
+    --text-primary: #1A1A1A;
+    --text-secondary: #666666;
+    --text-on-accent: #FFFFFF;
+    --border-color: #EAEAEA;
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+    --sidebar-bg: #F8F8F8;
+    --logo-color: #1A1A1A;
+}
+
+/* Dark Mode Detection */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #1C1C1E;
+        --bg-secondary: #2C2C2E;
+        --bg-chat-user: #0A84FF;
+        --bg-chat-assistant: #3A3A3C;
+        --text-primary: #F5F5F7;
+        --text-secondary: #A1A1A6;
+        --text-on-accent: #FFFFFF;
+        --border-color: #3A3A3C;
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
+        --sidebar-bg: #2C2C2E;
+        --logo-color: #F5F5F7;
+    }
+}
+
+/* Global Reset & Font */
+html,
+body,
+[class*="css"] {
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", Roboto, sans-serif;
+    color: var(--text-primary) !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+.stApp {
+    background-color: var(--bg-primary) !important;
+}
+
+/* --- Branding (Top Left, balanced spacing) --- */
+.nexus-brand {
+    font-family: "Cinzel", "Bodoni Moda", serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--logo-color);
+    letter-spacing: 2px;
+
+    /* Balanced spacing from edges */
+    position: fixed;
+    top: 1rem;
+    left: calc(var(--sidebar-width, 21rem) + 1rem);
+    z-index: 999999;
+    pointer-events: none;
+    line-height: 1;
+    white-space: nowrap;
+    transition: left 0.3s ease;
+}
+
+/* When sidebar is collapsed - avoid overlap with sidebar toggle button */
+[data-testid="stSidebar"][aria-expanded="false"]~.stMainBlockContainer .nexus-brand,
+body:has([data-testid="stSidebar"][aria-expanded="false"]) .nexus-brand {
+    left: 4rem;
+}
+
+/* --- Hide Popover Arrow/Caret --- */
+/* Target all possible arrow indicators in popovers */
+[data-testid="stPopover"] button span[data-testid="stMarkdownContainer"]+span,
+[data-testid="stPopover"] button>span:last-child,
+button[kind="popover"] svg,
+button[kind="popover"] span svg,
+[data-baseweb="popover"] svg[data-icon],
+.stPopover button svg {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* --- Reduce top padding for main content --- */
+.stMainBlockContainer {
+    padding-top: 1rem !important;
+}
+
+/* --- Integrated Session Button Styling --- */
+/* Remove gap between columns to make them look like one button */
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"]>[data-testid="stVerticalBlock"]>[data-testid="stHorizontalBlock"] {
+    gap: 0 !important;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+/* First column (title button) */
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:first-child button {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: none !important;
+}
+
+/* Second column (menu button) - blend into first button */
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:last-child {
+    max-width: 36px !important;
+    min-width: 36px !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:last-child button {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-left: none !important;
+    background: transparent !important;
+    border: none !important;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    padding: 0 !important;
+    min-height: 100% !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:hover>[data-testid="column"]:last-child button {
+    opacity: 1;
+}
+
+/* Hide the popover dropdown arrow/caret in sidebar */
+[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] [data-testid="column"]:last-child button svg {
+    display: none !important;
+}
+
+/* --- Main Header Bubble Button Styling --- */
+/* Target the header area horizontal block in main content */
+section[data-testid="stMain"] [data-testid="stHorizontalBlock"] [data-testid="stHorizontalBlock"] {
+    gap: 0 !important;
+    background: var(--bg-secondary);
+    border-radius: 25px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+section[data-testid="stMain"] [data-testid="stHorizontalBlock"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:first-child button {
+    border-radius: 25px 0 0 25px !important;
+    border-right: none !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+section[data-testid="stMain"] [data-testid="stHorizontalBlock"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:last-child {
+    max-width: 40px !important;
+    min-width: 40px !important;
+}
+
+section[data-testid="stMain"] [data-testid="stHorizontalBlock"] [data-testid="stHorizontalBlock"]>[data-testid="column"]:last-child button {
+    border-radius: 0 25px 25px 0 !important;
+    border-left: none !important;
+    background: transparent !important;
+    border: none !important;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    color: var(--text-secondary) !important;
+}
+
+section[data-testid="stMain"] [data-testid="stHorizontalBlock"] [data-testid="stHorizontalBlock"]:hover>[data-testid="column"]:last-child button {
+    opacity: 1;
+}
+
+section[data-testid="stMain"]>div:first-child {
+    padding-top: 0 !important;
+}
+
+/* --- Sidebar Styling --- */
+[data-testid="stSidebar"] {
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stMarkdown"] {
+    color: var(--text-secondary) !important;
+}
+
+/* Sidebar buttons */
+[data-testid="stSidebar"] button {
+    color: var(--text-primary) !important;
+}
+
+[data-testid="stSidebar"] button[data-testid="stBaseButton-secondary"] {
+    background-color: transparent !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+[data-testid="stSidebar"] button[data-testid="stBaseButton-secondary"]:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+/* --- Session Button with Integrated Menu --- */
+.session-btn-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.session-btn-container .menu-trigger {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: transparent !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    font-size: 14px;
+    color: var(--text-secondary) !important;
+    cursor: pointer;
+}
+
+.session-btn-container:hover .menu-trigger {
+    opacity: 1;
+}
+
+/* --- Header & Title (Top Center) --- */
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+    position: relative;
+}
+
+/* --- Hide Streamlit Defaults --- */
+header[data-testid="stHeader"] {
+    visibility: visible !important;
+    background-color: transparent !important;
+}
+
+.stDeployButton {
+    display: none !important;
+}
+
+#MainMenu {
+    visibility: hidden;
+}
+
+footer {
+    visibility: hidden;
+}
+
+/* --- Animation --- */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Chat Bubbles --- */
+
+/* User (Right) */
+.stChatMessage[aria-label="Chat message from user"] {
+    flex-direction: row-reverse !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.stChatMessage[aria-label="Chat message from user"]>div:nth-child(2) {
+    background-color: var(--bg-chat-user) !important;
+    color: var(--text-on-accent) !important;
+    border-radius: 20px 20px 0 20px !important;
+    padding: 10px 16px !important;
+    margin-right: 8px !important;
+    margin-left: auto !important;
+    text-align: right !important;
+    box-shadow: 0 1px 2px var(--shadow-medium);
+    animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stChatMessage[aria-label="Chat message from user"] * {
+    color: var(--text-on-accent) !important;
+}
+
+/* Assistant (Left) */
+.stChatMessage[aria-label="Chat message from assistant"] {
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.stChatMessage[aria-label="Chat message from assistant"]>div:nth-child(2) {
+    background-color: var(--bg-chat-assistant) !important;
+    color: var(--text-primary) !important;
+    border-radius: 20px 20px 20px 0 !important;
+    padding: 10px 16px !important;
+    border: none !important;
+    box-shadow: 0 1px 2px var(--shadow-light);
+    animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.1s;
+}
+
+.stChatMessage[aria-label="Chat message from assistant"] * {
+    color: var(--text-primary) !important;
+}
+
+/* Avatar */
+.stChatMessage .stAvatar {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+}
+
+/* Input Area */
+.stChatInputContainer {
+    border-radius: 25px !important;
+    border: 1px solid var(--border-color) !important;
+    background: var(--bg-primary) !important;
+    box-shadow: 0 -5px 20px var(--shadow-light);
+}
+
+.stChatInputContainer textarea {
+    color: var(--text-primary) !important;
+    background: transparent !important;
+}
+
+/* --- Expanders & Status in Dark Mode --- */
+.stExpander {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+}
+
+.stExpander summary {
+    color: var(--text-primary) !important;
+}
+
+/* Status component */
+[data-testid="stStatus"] {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Text inputs */
+.stTextInput input,
+.stTextArea textarea {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Form */
+.stForm {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+}
+
+/* Dialog/Modal */
+[data-testid="stModal"]>div {
+    background-color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Popover */
+[data-testid="stPopover"] {
+    background-color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Divider */
+.stDivider {
+    border-color: var(--border-color) !important;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    background-color: var(--bg-secondary) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: var(--text-primary) !important;
+}
+
+/* Toast */
+.stToast {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
