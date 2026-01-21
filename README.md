@@ -5,6 +5,12 @@
   <img src="https://img.shields.io/badge/ChromaDB-Vector%20Store-green?style=for-the-badge" alt="ChromaDB">
 </p>
 
+<p align="center">
+  <a href="https://phenothiazine-nexus-core.streamlit.app/">
+    <img src="https://img.shields.io/badge/🚀_Live_Demo-Try_Now-FF4B4B?style=for-the-badge" alt="Live Demo">
+  </a>
+</p>
+
 <h1 align="center">⚫ Nexus-Core</h1>
 
 <p align="center">
